@@ -17,6 +17,9 @@ dependencies:
   http: ^1.2.1
   firebase_messaging: ^14.9.3
   firebase_auth: ^4.19.6
+  provider: ^6.1.2
+  google_sign_in: ^6.2.1
+  firebase_core: ^2.31.1
 
 dev_dependencies:
   flutter_test:
