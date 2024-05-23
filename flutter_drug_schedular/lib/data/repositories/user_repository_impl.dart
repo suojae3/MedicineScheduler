@@ -1,7 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../domain/entities/user.dart';
-import '../../data/repositories/user_repository.dart';
+import '../../domain/repositories/user_repository.dart';
 import '../models/user_model.dart';
 
 class UserRepositoryImpl implements UserRepository {
