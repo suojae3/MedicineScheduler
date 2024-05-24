@@ -58,7 +58,22 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    flavorDimensions "default"
+    
+    productFlavors {
+        prod {
+            dimension "flavor"
+        }
+
+        dev {
+            resValue "string", "app_name", "flutter_drug_schedular"
+            applicationIdSuffix ".dev"
+        }
+    }
 }
+
+
 
 flutter {
     source '../..'
