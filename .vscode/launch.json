@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "dev",
+      "request": "launch",
+      "type": "dart",
+      "program": "/Users/i/StudioProjects/DrugSchedular/flutter_drug_schedular/lib/main_dev.dart",
+      "args": ["--flavor", "dev", "target", "lb/main_dev.dart"]
+    },
+    {
+      "name": "prod",
+      "request": "launch",
+      "type": "dart",
+      "program": "/Users/i/StudioProjects/DrugSchedular/flutter_drug_schedular/lib/main_prod.dart",
+      "args": ["--flavor", "prod", "target", "lb/main_prod.dart"]
+    }
+  ]
+}
