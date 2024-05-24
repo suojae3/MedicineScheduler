@@ -25,3 +25,7 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+
+# Ignore GoogleService-Info.plist files for both debug and release configurations
+GoogleService-Info-Debug.plist
+GoogleService-Info-Release.plist
