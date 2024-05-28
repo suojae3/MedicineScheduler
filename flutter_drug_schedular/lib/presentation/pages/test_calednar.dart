@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class TestCalendar extends StatelessWidget {
   const TestCalendar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: CalendarPage(),
+    return FutureBuilder(
+      future: initializeDateFormatting('ko_KR', null),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return MaterialApp(
+            home: CalendarPage(),
+          );
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
 }
@@ -24,108 +35,103 @@ class _CalendarPageState extends State<CalendarPage> {
 
   @override
   Widget build(BuildContext context) {
+    String formattedDate = DateFormat('M.dd E', 'ko_KR').format(_selectedDay ?? DateTime.now());
+
     return Scaffold(
+      backgroundColor: Colors.white,  // Scaffold의 배경색을 흰색으로 설정
       appBar: AppBar(
-        title: const Text('약 복용 스케쥴러'),
+        backgroundColor: Colors.white,  // AppBar의 배경색을 흰색으로 설정
+        title: const Text('약 복용 스케쥴러', style: TextStyle(color: Colors.black)),  // 텍스트 색상도 설정
+        iconTheme: IconThemeData(color: Colors.black),  // 아이콘 색상도 설정
       ),
-      body: TableCalendar(
-        firstDay: DateTime.utc(2020, 1, 1),
-        lastDay: DateTime.utc(2030, 12, 31),
-        focusedDay: _focusedDay,
-        calendarFormat: _calendarFormat,
-        selectedDayPredicate: (day) {
-          return isSameDay(_selectedDay, day);
-        },
-        onDaySelected: (selectedDay, focusedDay) {
-          setState(() {
-            _selectedDay = selectedDay;
-            _focusedDay = focusedDay;
-          });
-        },
-        daysOfWeekHeight: 32.0, // 요일과 날짜 사이의 간격을 조정합니다.
-        calendarStyle: CalendarStyle(
-          isTodayHighlighted: true,
-          todayDecoration: const BoxDecoration(), // 기본값은 빈 BoxDecoration
-          selectedTextStyle: const TextStyle(color: Colors.white),
-          selectedDecoration: const BoxDecoration(
-            color: Colors.black,
-            shape: BoxShape.circle,
+      body: Column(
+        children: [
+          Container(
+            color: Colors.white,
+            child: _buildCalendar(),
           ),
-        ),
-        headerStyle: const HeaderStyle(
-          formatButtonVisible: false,
-          leftChevronVisible: false,
-          rightChevronVisible: false,
-        ),
-        onFormatChanged: (format) {
-          if (_calendarFormat != format) {
-            setState(() {
-              _calendarFormat = format;
-            });
-          }
-        },
-        onPageChanged: (focusedDay) {
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            color: Colors.white,
+            alignment: Alignment.centerLeft,
+            child: Text(
+              formattedDate,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                  child: Container(
+                    color: Colors.white,  // ListView 아이템 배경색을 흰색으로 설정
+                    child: ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                      leading: Container(
+                        width: 5.0,
+                        color: Colors.blue,
+                      ),
+                      title: Text('Item ${index + 1}'),
+                      subtitle: Text('Subtitle ${index + 1}'),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCalendar() {
+    return TableCalendar(
+      firstDay: DateTime.utc(2020, 1, 1),
+      lastDay: DateTime.utc(2030, 12, 31),
+      focusedDay: _focusedDay,
+      calendarFormat: _calendarFormat,
+      selectedDayPredicate: (day) {
+        return isSameDay(_selectedDay, day);
+      },
+      onDaySelected: (selectedDay, focusedDay) {
+        setState(() {
+          _selectedDay = selectedDay;
           _focusedDay = focusedDay;
-        },
-        calendarBuilders: CalendarBuilders(
-          todayBuilder: (context, date, _) => CustomDayWidget(
-            date: date,
-            colors1: const [
-              Color(0xFFFFA726),
-              Color(0xFF42A5F5),
-              Color(0xFF66BB6A),
-            ],
-            colors2: const [
-              Color(0xFFFF7043),
-              Color(0xFF7E57C2),
-              // Color(0xFF26C6DA),
-            ],
-            isToday: true,
-          ),
-          selectedBuilder: (context, date, _) => CustomDayWidget(
-            date: date,
-            colors1: const [
-              Color(0xFFFFA726),
-              Color(0xFF42A5F5),
-              Color(0xFF66BB6A),
-            ],
-            colors2: const [
-              Color(0xFFFF7043),
-              // Color(0xFF7E57C2),
-              // Color(0xFF26C6DA),
-            ],
-            isSelected: true,
-          ),
-          defaultBuilder: (context, date, _) => CustomDayWidget(
-            date: date,
-            colors1: const [
-              Color(0xFFFFA726),
-              Color(0xFF42A5F5),
-              Color(0xFF66BB6A),
-            ],
-            colors2: const [
-              Color(0xFFFF7043),
-              // Color(0xFF7E57C2),
-              // Color(0xFF26C6DA),
-            ],
-            isFuture: date.isAfter(DateTime.now()),
-          ),
-          outsideBuilder: (context, date, _) => CustomDayWidget(
-            date: date,
-            colors1: const [
-              Color(0xFFFFA726),
-              Color(0xFF42A5F5),
-              Color(0xFF66BB6A),
-            ],
-            colors2: const [
-              Color(0xFFFF7043),
-              // Color(0xFF7E57C2),
-              // Color(0xFF26C6DA),
-            ],
-            isOutside: true,
-            isFuture: date.isAfter(DateTime.now()),
-          ),
+        });
+      },
+      daysOfWeekHeight: 32.0,
+      calendarStyle: CalendarStyle(
+        isTodayHighlighted: true,
+        todayDecoration: const BoxDecoration(),
+        selectedTextStyle: const TextStyle(color: Colors.white),
+        selectedDecoration: const BoxDecoration(
+          color: Colors.black,
+          shape: BoxShape.circle,
         ),
+      ),
+      headerStyle: const HeaderStyle(
+        formatButtonVisible: false,
+        leftChevronVisible: false,
+        rightChevronVisible: false,
+      ),
+      onFormatChanged: (format) {
+        if (_calendarFormat != format) {
+          setState(() {
+            _calendarFormat = format;
+          });
+        }
+      },
+      onPageChanged: (focusedDay) {
+        _focusedDay = focusedDay;
+      },
+      calendarBuilders: CalendarBuilders(
+        todayBuilder: (context, date, _) => CustomDayWidget(date: date, isToday: true),
+        selectedBuilder: (context, date, _) => CustomDayWidget(date: date, isSelected: true),
+        defaultBuilder: (context, date, _) => CustomDayWidget(date: date, isFuture: date.isAfter(DateTime.now())),
+        outsideBuilder: (context, date, _) => CustomDayWidget(date: date, isOutside: true, isFuture: date.isAfter(DateTime.now())),
       ),
     );
   }
@@ -142,8 +148,8 @@ class CustomDayWidget extends StatelessWidget {
 
   const CustomDayWidget({
     required this.date,
-    required this.colors1,
-    required this.colors2,
+    this.colors1 = const [Color(0xFFFFA726), Color(0xFF42A5F5), Color(0xFF66BB6A)],
+    this.colors2 = const [Color(0xFFFF7043), Color(0xFF7E57C2)],
     this.isToday = false,
     this.isSelected = false,
     this.isOutside = false,
@@ -178,10 +184,7 @@ class CustomDayWidget extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             '${date.day}',
-            style: TextStyle(
-              fontSize: 13.0,
-              color: getTextColor(),
-            ),
+            style: TextStyle(fontSize: 13.0, color: getTextColor()),
           ),
         ),
         const SizedBox(height: 5),
@@ -212,7 +215,7 @@ class DoubleCircleRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CircleRow(colors: colors1, isTransparent: isTransparent, maxCircles: 3),
-        const SizedBox(height: 5), // 줄 사이에 간격을 추가
+        const SizedBox(height: 5),
         CircleRow(colors: colors2, isTransparent: isTransparent, maxCircles: 3),
       ],
     );
@@ -224,7 +227,11 @@ class CircleRow extends StatelessWidget {
   final bool isTransparent;
   final int maxCircles;
 
-  const CircleRow({required this.colors, required this.isTransparent, required this.maxCircles});
+  const CircleRow({
+    required this.colors,
+    required this.isTransparent,
+    required this.maxCircles,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -233,10 +240,10 @@ class CircleRow extends StatelessWidget {
       if (i < colors.length) {
         rowChildren.add(CircleWidget(color: colors[i], isTransparent: isTransparent));
       } else {
-        rowChildren.add(SizedBox(width: 5.0)); // 빈 자리 채우기
+        rowChildren.add(SizedBox(width: 5.0));
       }
       if (i < maxCircles - 1) {
-        rowChildren.add(const SizedBox(width: 5)); // 동그라미 사이에 간격을 추가
+        rowChildren.add(const SizedBox(width: 5));
       }
     }
 
@@ -251,7 +258,10 @@ class CircleWidget extends StatelessWidget {
   final Color color;
   final bool isTransparent;
 
-  const CircleWidget({required this.color, required this.isTransparent});
+  const CircleWidget({
+    required this.color,
+    required this.isTransparent,
+  });
 
   @override
   Widget build(BuildContext context) {
