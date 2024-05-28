@@ -1,13 +1,74 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_drug_schedular/global.dart';
 import 'package:flutter_drug_schedular/main.dart';
 import 'package:flutter_drug_schedular/presentation/pages/test_calednar.dart';
 
-
 void main() {
   Global.baseURL = "https://flutter_drug_schedular/dev/";
   // runApp(const MyApp());
-  runApp(TestCalendar());
+  runApp(testMyApp());
 }
 
+class testMyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 1;
+  final PageController _pageController = PageController(initialPage: 1);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        children: [
+          Center(child: Text('Home')), // 첫 번째 탭의 내용
+          TestCalendar(), // 두 번째 탭의 내용
+          Center(child: Text('Settings')), // 세 번째 탭의 내용
+
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white, // 배경색을 흰색으로 설정
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+            _pageController.jumpToPage(index);
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.edit),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            label: 'Calendar',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
+      ),
+    );
+  }
+}
