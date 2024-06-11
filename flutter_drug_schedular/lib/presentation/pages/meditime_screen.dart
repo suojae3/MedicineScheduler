@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_drug_schedular/domain/entities/pill.dart';
+import 'add_pill_screen.dart'; // 추가된 코드
 
 class MeditimeScreen extends StatefulWidget {
   @override
@@ -113,7 +114,17 @@ class _MeditimeScreenState extends State<MeditimeScreen> {
             ),
           ),
         ],
+      ), 
+            floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddPillScreen()),
+          );
+        },
+        child: Icon(Icons.add),
       ),
-    );
+   
+      );
   }
 }

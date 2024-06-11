@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_drug_schedular/global.dart';
+import 'package:flutter_drug_schedular/presentation/pages/add_pill_screen.dart';
 import 'package:flutter_drug_schedular/presentation/pages/test_calednar.dart';
 import 'package:flutter_drug_schedular/presentation/pages/meditime_screen.dart';
 
@@ -66,10 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Settings',
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.add),
       ),
     );
   }
