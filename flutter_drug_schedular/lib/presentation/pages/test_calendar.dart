@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_drug_schedular/presentation/providers/pill_provider.dart';
+import 'package:flutter_drug_schedular/domain/entities/pill.dart';
 
 class TestCalendar extends StatelessWidget {
   const TestCalendar({super.key});
@@ -35,14 +38,17 @@ class _CalendarPageState extends State<CalendarPage> {
 
   @override
   Widget build(BuildContext context) {
+    final pillProvider = Provider.of<PillProvider>(context);
     String formattedDate = DateFormat('M.dd E', 'ko_KR').format(_selectedDay ?? DateTime.now());
 
+    List<Pill> pillsForSelectedDay = pillProvider.getPillsForDay(_selectedDay ?? DateTime.now());
+
     return Scaffold(
-      backgroundColor: Colors.white,  // Scaffold의 배경색을 흰색으로 설정
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,  // AppBar의 배경색을 흰색으로 설정
-        title: const Text('약 복용 스케쥴러', style: TextStyle(color: Colors.black)),  // 텍스트 색상도 설정
-        iconTheme: IconThemeData(color: Colors.black),  // 아이콘 색상도 설정
+        backgroundColor: Colors.white,
+        title: const Text('약 복용 스케쥴러', style: TextStyle(color: Colors.black)),
+        iconTheme: IconThemeData(color: Colors.black),
       ),
       body: Column(
         children: [
@@ -60,27 +66,7 @@ class _CalendarPageState extends State<CalendarPage> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.zero,
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                  child: Container(
-                    color: Colors.white,  // ListView 아이템 배경색을 흰색으로 설정
-                    child: ListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
-                      leading: Container(
-                        width: 5.0,
-                        color: Colors.blue,
-                      ),
-                      title: Text('Item ${index + 1}'),
-                      subtitle: Text('Subtitle ${index + 1}'),
-                    ),
-                  ),
-                );
-              },
-            ),
+            child: _buildPillList(pillsForSelectedDay, formattedDate),
           ),
         ],
       ),
@@ -133,6 +119,43 @@ class _CalendarPageState extends State<CalendarPage> {
         defaultBuilder: (context, date, _) => CustomDayWidget(date: date, isFuture: date.isAfter(DateTime.now())),
         outsideBuilder: (context, date, _) => CustomDayWidget(date: date, isOutside: true, isFuture: date.isAfter(DateTime.now())),
       ),
+    );
+  }
+
+  Widget _buildPillList(List<Pill> pills, String date) {
+    return ListView.builder(
+      padding: EdgeInsets.zero,
+      itemCount: pills.isEmpty ? 1 : pills.length,
+      itemBuilder: (context, index) {
+        if (pills.isEmpty) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+            child: Container(
+              color: Colors.white,
+              child: ListTile(
+                title: Text('No pills scheduled for $date'),
+              ),
+            ),
+          );
+        } else {
+          final pill = pills[index];
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+            child: Container(
+              color: Colors.white,
+              child: ListTile(
+                contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                leading: Container(
+                  width: 5.0,
+                  color: pill.color,
+                ),
+                title: Text(pill.name),
+                subtitle: Text(pill.description),
+              ),
+            ),
+          );
+        }
+      },
     );
   }
 }

@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_drug_schedular/global.dart';
 import 'package:flutter_drug_schedular/presentation/pages/add_pill_screen.dart';
-import 'package:flutter_drug_schedular/presentation/pages/test_calednar.dart';
+import 'package:flutter_drug_schedular/presentation/pages/test_calendar.dart';
+import 'package:flutter_drug_schedular/presentation/pages/test_calendar.dart';
 import 'package:flutter_drug_schedular/presentation/pages/meditime_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_drug_schedular/presentation/providers/pill_provider.dart';
 
 void main() {
   Global.baseURL = "https://flutter_drug_schedular/dev/";
-  runApp(testMyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => PillProvider(),
+      child: MyApp(),
+    ),
+  );
 }
 
-class testMyApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
