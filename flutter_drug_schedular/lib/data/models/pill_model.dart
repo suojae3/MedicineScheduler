@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_drug_schedular/domain/entities/pill.dart';
 
 class PillModel {
@@ -6,7 +7,8 @@ class PillModel {
   final String period;
   final String cycle;
   final String description;
-  final String color;
+  final Color color;
+  final String? imagePath;
 
   PillModel({
     required this.name,
@@ -15,6 +17,7 @@ class PillModel {
     required this.cycle,
     required this.description,
     required this.color,
+    required this.imagePath
   });
 
   factory PillModel.fromJson(Map<String, dynamic> json) {
@@ -25,6 +28,7 @@ class PillModel {
       cycle: json['cycle'],
       description: json['description'],
       color: json['color'],
+      imagePath: json['image']
     );
   }
 
@@ -47,6 +51,7 @@ class PillModel {
       cycle: cycle,
       description: description,
       color: color,
+      imagePath: imagePath
     );
   }
 
@@ -58,6 +63,7 @@ class PillModel {
       cycle: pill.cycle,
       description: pill.description,
       color: pill.color,
+      imagePath: pill.imagePath
     );
   }
 }

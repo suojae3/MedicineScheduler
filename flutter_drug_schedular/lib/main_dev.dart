@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_drug_schedular/global.dart';
-import 'package:flutter_drug_schedular/main.dart';
 import 'package:flutter_drug_schedular/presentation/pages/test_calednar.dart';
+import 'package:flutter_drug_schedular/presentation/pages/meditime_screen.dart';
 
 void main() {
   Global.baseURL = "https://flutter_drug_schedular/dev/";
-  // runApp(const MyApp());
   runApp(testMyApp());
 }
 
@@ -13,19 +12,19 @@ class testMyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomePage(),
+      home: HomeScreen(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 1;
-  final PageController _pageController = PageController(initialPage: 1);
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+  final PageController _pageController = PageController(initialPage: 0);
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +38,9 @@ class _HomePageState extends State<HomePage> {
           });
         },
         children: [
-          Center(child: Text('Home')), // 첫 번째 탭의 내용
+          MeditimeScreen(), // 첫 번째 탭의 내용
           TestCalendar(), // 두 번째 탭의 내용
           Center(child: Text('Settings')), // 세 번째 탭의 내용
-
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -68,6 +66,10 @@ class _HomePageState extends State<HomePage> {
             label: 'Settings',
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
       ),
     );
   }
