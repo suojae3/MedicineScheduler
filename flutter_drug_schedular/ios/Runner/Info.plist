@@ -47,5 +47,16 @@
 	<true/>
 	<key>FLTEnableImpeller</key>
 	<false/>
+	<key>CFBundleURLTypes</key>
+	<array>
+    <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+        </array>
+    </dict>
+	</array>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Face ID is used to sign in to your account.</string>
 </dict>
 </plist>

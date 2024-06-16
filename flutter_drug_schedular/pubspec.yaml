@@ -20,6 +20,7 @@ dependencies:
   table_calendar: ^3.1.1
   intl: ^0.19.0
   provider: ^6.1.2
+  sign_in_with_apple: ^6.1.1
 
 
 dev_dependencies:
@@ -34,4 +35,9 @@ flutter:
   uses-material-design: true
   assets:
     - assets/test-pills.png
+    - assets/pencil.png
+    - assets/calendar.png
+    - assets/setting.png
+
+
 

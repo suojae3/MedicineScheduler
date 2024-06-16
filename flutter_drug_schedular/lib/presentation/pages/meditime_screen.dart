@@ -96,7 +96,12 @@ class _MeditimeScreenState extends State<MeditimeScreen> {
             MaterialPageRoute(builder: (context) => AddPillScreen()),
           );
         },
-        child: Icon(Icons.add),
+        child: Icon(Icons.add, color: Colors.white),
+        backgroundColor: Color(0xFF4D8FF5),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        elevation: 5.0, // 그림자 추가
       ),
     );
   }

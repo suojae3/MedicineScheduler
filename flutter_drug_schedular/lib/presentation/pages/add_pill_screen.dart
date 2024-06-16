@@ -10,13 +10,13 @@ class _AddPillScreenState extends State<AddPillScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('약 추가'),
+        title: const Text('약 추가'),
         actions: [
           TextButton(
             onPressed: () {
               // 등록 버튼 클릭 시 로직
             },
-            child: Text(
+            child: const Text(
               '등록',
               style: TextStyle(color: Colors.blue),
             ),
@@ -27,16 +27,16 @@ class _AddPillScreenState extends State<AddPillScreen> {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            TextField(
+            const TextField(
               decoration: InputDecoration(
                 labelText: '약 이름',
                 hintText: '예) 타이레놀',
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               children: [
-                Expanded(
+                const Expanded(
                   child: Text('약 사진'),
                 ),
                 ElevatedButton.icon(
